@@ -26,4 +26,12 @@ export const config = {
     // Tiempo máximo de cada prueba: los monos ejecutan muchas acciones
     timeout: 300000,
   },
+  // Después de cada prueba: si falló, guarda una captura en screenshots/
+  afterTest: async function (test, context, { passed }) {
+    if (!passed) {
+      const filename = `ERROR_${test.title.replace(/\s+/g, "_")}_${Date.now()}.png`;
+      await browser.saveScreenshot(`./screenshots/${filename}`);
+      console.log(`Captura de la falla: ./screenshots/${filename}`);
+    }
+  },
 };
